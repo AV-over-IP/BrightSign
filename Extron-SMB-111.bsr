@@ -1,24 +1,24 @@
-' Establece la IP y el puerto del dispositivo de grabación
-Const ipAddress = "10.100.2.51"
+Const ipAddress = "10.100.2.51" ' IP de Dispositivo EXTRON SMB 111, cambiar si es neceario
 Const port = 23
 
-' Inicia la conexión TCP
+Const startRecord = "E Y1 RCDR}"
+Const stopRecord = "E Y0 RCDR}"
+
 Function InitTCPConnection() As Object
     tcp = CreateObject("roUrlTransfer")
-    tcp.SetUrl("tcp://" + ipAddress + ":" + Str(port))
+    tcp.SetPort(port)
+    tcp.SetHost(ipAddress)
     Return tcp
 End Function
 
-' Comando para iniciar la grabación
 Function StartRecording()
     tcp = InitTCPConnection()
-    command = "E Y1 RCDR}"  ' Comando de inicio de grabación
-    tcp.PostFromString(command)
+    command = startRecord ' Comando de inicio de grabación
+    tcp.AsyncPostFromString(command)
 End Function
 
-' Comando para detener la grabación
 Function StopRecording()
     tcp = InitTCPConnection()
-    command = "E Y0 RCDR}"  ' Comando de detención de grabación
-    tcp.PostFromString(command)
+    command = stopRecord ' Comando de detención de grabación
+    tcp.AsyncPostFromString(command)
 End Function
